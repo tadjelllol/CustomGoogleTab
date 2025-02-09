@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "New Tab",
+  "version": "3.0",
+  "description": "A custom new tab page.",
+  "permissions": ["tabs", "declarativeNetRequest"],
+  "chrome_url_overrides": {
+      "newtab": "newtab.html"
+  },
+  "background": {
+      "service_worker": "background.js"
+  },
+  "action": {
+      "default_title": "New Tab"
+  }
+}
