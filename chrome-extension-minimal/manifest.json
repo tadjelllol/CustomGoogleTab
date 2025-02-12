@@ -3,17 +3,12 @@
     "name": "Custom New Tab",
     "version": "1.0",
     "description": "A custom new tab with random backgrounds and bookmarks.",
-    "permissions": ["tabs"],
+    "permissions": ["tabs","declarativeNetRequest"],
     "background": {
         "service_worker": "background.js"
     },
     "chrome_url_overrides": {
         "newtab": "newtab.html"
-    },
-    "content_scripts": [
-        {
-            "matches": ["chrome://newtab/"],
-            "js": ["content.js"]
-        }
-    ]
+    }
+    
 }
