@@ -26,6 +26,15 @@ const backgrounds = [
     'https://w.wallhaven.cc/full/md/wallhaven-md7r9m.jpg',
     'https://w.wallhaven.cc/full/0p/wallhaven-0p9jk9.jpg',
     'https://w.wallhaven.cc/full/zy/wallhaven-zykx7w.png',
+    'https://w.wallhaven.cc/full/1j/wallhaven-1jk1gv.jpg',
+    'https://w.wallhaven.cc/full/vm/wallhaven-vmg655.jpg',
+    'https://i.imgur.com/034VHUj.jpeg',
+    'https://i.imgur.com/kpNxlQq.png',
+    'https://i.imgur.com/2Gt0DrC.png',
+    'https://i.imgur.com/jgSDGLm.png',
+    'https://i.imgur.com/MaZXa78.jpeg',
+    'https://i.imgur.com/C9Z4FVH.png',
+    'https://i.imgur.com/wn36nLX.png',
 
 
 ]

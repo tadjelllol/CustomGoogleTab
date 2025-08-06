@@ -1,5 +1,5 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 4,
     "name": "Custom New Tab",
     "version": "1.0",
     "description": "A custom new tab with random backgrounds and bookmarks.",
