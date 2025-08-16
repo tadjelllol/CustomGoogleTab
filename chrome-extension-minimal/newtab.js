@@ -41,8 +41,18 @@ const backgroundImages = [
   "https://i.imgur.com/k0JcrwO.png",
   "https://i.imgur.com/cCKaI7a.png",
   "https://i.imgur.com/dtU5nBy.jpeg",
-  ""
-
+  "https://w.wallhaven.cc/full/39/wallhaven-39e83d.jpg",
+  "https://w.wallhaven.cc/full/nz/wallhaven-nzmvew.jpg",
+  "https://images7.alphacoders.com/139/thumb-1920-1394851.jpg",
+  "https://images5.alphacoders.com/778/thumb-1920-778941.jpg",
+  "https://images5.alphacoders.com/133/thumb-1920-1331432.png",
+  "https://images2.alphacoders.com/191/thumb-1920-19102.png",
+  "https://images6.alphacoders.com/769/thumb-1920-769877.jpg",
+  "https://images4.alphacoders.com/132/thumb-1920-1324987.jpeg",
+  "https://images5.alphacoders.com/543/thumb-1920-543469.jpg",
+  "https://images8.alphacoders.com/129/thumb-1920-1293832.jpg",
+  "https://w.wallhaven.cc/full/jx/wallhaven-jxm7oq.jpg",
+  "https://w.wallhaven.cc/full/wy/wallhaven-wy19vr.jpg",
 
 ]
 
