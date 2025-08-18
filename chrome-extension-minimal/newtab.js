@@ -45,31 +45,26 @@ const backgroundImages = [
   "https://w.wallhaven.cc/full/nz/wallhaven-nzmvew.jpg",
   "https://images7.alphacoders.com/139/thumb-1920-1394851.jpg",
   "https://images5.alphacoders.com/778/thumb-1920-778941.jpg",
-  "https://images5.alphacoders.com/133/thumb-1920-1331432.png",
   "https://images2.alphacoders.com/191/thumb-1920-19102.png",
-  "https://images6.alphacoders.com/769/thumb-1920-769877.jpg",
-  "https://images4.alphacoders.com/132/thumb-1920-1324987.jpeg",
-  "https://images5.alphacoders.com/543/thumb-1920-543469.jpg",
   "https://images8.alphacoders.com/129/thumb-1920-1293832.jpg",
   "https://w.wallhaven.cc/full/jx/wallhaven-jxm7oq.jpg",
-  "https://w.wallhaven.cc/full/wy/wallhaven-wy19vr.jpg",
-
 ]
 
 let currentBackgroundIndex = 0
 
 function changeBackground() {
-  // Add fade out effect
   document.body.style.opacity = "0.7"
 
   setTimeout(() => {
-    currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length
+    let newIndex
+    do {
+      newIndex = Math.floor(Math.random() * backgroundImages.length)
+    } while (newIndex === currentBackgroundIndex && backgroundImages.length > 1)
+
+    currentBackgroundIndex = newIndex
     document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
 
-    // Fade back in
     document.body.style.opacity = "1"
-
-    // Extract colors from new background after fade completes
     setTimeout(extractColorsFromBackground, 300)
   }, 300)
 }
@@ -82,7 +77,6 @@ function updateTime() {
   const minutes = String(now.getMinutes()).padStart(2, "0")
   const clockElement = document.getElementById("clock")
 
-  // Add smooth transition when time changes
   if (clockElement.textContent !== `${hours}:${minutes}`) {
     clockElement.style.transform = "scale(1.05)"
     setTimeout(() => {
@@ -99,7 +93,6 @@ document.getElementById("search").addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     const query = event.target.value
     if (query.trim()) {
-      // Add search animation
       event.target.style.transform = "scale(0.95)"
       setTimeout(() => {
         window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`
@@ -128,7 +121,6 @@ function removeCustomText() {
   }
 }
 
-// Run on load and periodically check
 document.addEventListener("DOMContentLoaded", removeCustomText)
 setInterval(removeCustomText, 1000)
 
@@ -163,7 +155,7 @@ function extractColorsFromBackground() {
   }
 
   img.onerror = () => {
-    const fallbackColors = ["#ffffff", "#f0f0f0", "#e0e0e0", "#d0d0d0"]
+    const fallbackColors = ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
     applyGradientBorders(fallbackColors)
   }
 
@@ -173,7 +165,6 @@ function extractColorsFromBackground() {
 function extractVibrantColors(imageData) {
   const colorMap = new Map()
 
-  // Sample every 4th pixel for performance
   for (let i = 0; i < imageData.length; i += 16) {
     const r = imageData[i]
     const g = imageData[i + 1]
@@ -181,20 +172,23 @@ function extractVibrantColors(imageData) {
     const alpha = imageData[i + 3]
 
     if (alpha > 128) {
-      // Check if color is vibrant (not gray/neutral)
       const max = Math.max(r, g, b)
       const min = Math.min(r, g, b)
       const saturation = max === 0 ? 0 : (max - min) / max
+      const brightness = (r + g + b) / 3
 
-      // Only include colors with good saturation and avoid very dark/light colors
-      if (saturation > 0.3 && max > 60 && max < 240) {
-        const colorKey = `${Math.floor(r / 20) * 20}-${Math.floor(g / 20) * 20}-${Math.floor(b / 20) * 20}`
-        colorMap.set(colorKey, (colorMap.get(colorKey) || 0) + 1)
+      if (saturation > 0.4 && brightness > 40 && brightness < 200 && max < 220) {
+        const isNearWhite = r > 200 && g > 200 && b > 200
+        const isNearGray = Math.abs(r - g) < 30 && Math.abs(g - b) < 30 && Math.abs(r - b) < 30
+
+        if (!isNearWhite && !isNearGray) {
+          const colorKey = `${Math.floor(r / 25) * 25}-${Math.floor(g / 25) * 25}-${Math.floor(b / 25) * 25}`
+          colorMap.set(colorKey, (colorMap.get(colorKey) || 0) + 1)
+        }
       }
     }
   }
 
-  // Get most frequent vibrant colors
   const sortedColors = Array.from(colorMap.entries())
     .sort(([, a], [, b]) => b - a)
     .slice(0, 6)
@@ -203,7 +197,7 @@ function extractVibrantColors(imageData) {
       return `rgb(${r}, ${g}, ${b})`
     })
 
-  return sortedColors.length >= 2 ? sortedColors : ["#ff4757", "#3742fa", "#2ed573", "#ffa502"]
+  return sortedColors.length >= 2 ? sortedColors : ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
 }
 
 function rgbToHsl(r, g, b) {
@@ -240,9 +234,8 @@ function rgbToHsl(r, g, b) {
 
 function applyGradientBorders(colors) {
   const fullOpacityColors = colors.map((color) => {
-    // Convert to full opacity if it has alpha
     if (color.includes("rgba")) {
-      return color.replace(/rgba$$([^,]+),([^,]+),([^,]+),[^)]+$$/, "rgb($1,$2,$3)")
+      return color.replace(/rgba$$[^,]+,[^,]+,[^,]+,[^)]+$$/, "rgb($1,$2,$3)")
     }
     return color
   })
@@ -254,14 +247,13 @@ function applyGradientBorders(colors) {
     searchBox.style.background = "rgba(255, 255, 255, 0.15)"
     searchBox.style.backdropFilter = "blur(10px)"
     searchBox.style.borderImage = `${gradient} 1`
-    searchBox.style.border = "4px solid transparent" // Increased border width for more prominence
+    searchBox.style.border = "3px solid transparent"
     searchBox.style.borderRadius = "50px"
     searchBox.style.backgroundClip = "padding-box"
     searchBox.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 
                                  inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                                 0 0 30px ${fullOpacityColors[0]},
-                                 0 0 60px ${fullOpacityColors[0]}80,
-                                 0 0 90px ${fullOpacityColors[0]}40`
+                                 0 0 20px ${fullOpacityColors[0]}80,
+                                 0 0 40px ${fullOpacityColors[0]}40`
   }
 
   const bookmarks = document.querySelectorAll(".bookmark")
@@ -272,22 +264,34 @@ function applyGradientBorders(colors) {
     bookmark.style.background = "rgba(255, 255, 255, 0.12)"
     bookmark.style.backdropFilter = "blur(10px)"
     bookmark.style.borderImage = `${gradient} 1`
-    bookmark.style.border = "3px solid transparent" // Increased border width
+    bookmark.style.border = "2px solid transparent"
     bookmark.style.borderRadius = "20px"
     bookmark.style.backgroundClip = "padding-box"
     bookmark.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.3), 
                                 inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                                0 0 25px ${glowColor},
-                                0 0 50px ${glowColor}60,
-                                0 0 75px ${glowColor}30`
+                                0 0 15px ${glowColor}60,
+                                0 0 30px ${glowColor}30`
+
+    bookmark.addEventListener("mouseenter", function () {
+      this.style.boxShadow = `0 12px 40px rgba(0, 0, 0, 0.4), 
+                              inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                              0 0 25px ${glowColor},
+                              0 0 50px ${glowColor}60,
+                              0 0 75px ${glowColor}30`
+    })
+
+    bookmark.addEventListener("mouseleave", function () {
+      this.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.3), 
+                              inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                              0 0 15px ${glowColor}60,
+                              0 0 30px ${glowColor}30`
+    })
   })
 }
 
-// Set initial random background
 document.addEventListener("DOMContentLoaded", () => {
   currentBackgroundIndex = Math.floor(Math.random() * backgroundImages.length)
   document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
 
-  // Wait for background to load then extract colors
   setTimeout(extractColorsFromBackground, 1000)
 })
