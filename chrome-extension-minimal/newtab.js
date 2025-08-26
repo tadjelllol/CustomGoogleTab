@@ -1,5 +1,5 @@
 const backgroundImages = [
-  "https://preview.redd.it/a-couple-favorite-halo-3-pieces-ive-made-v0-3p705kvhnjje1.jpg?width=2560&format=pjpg&auto=webp&s=7c64ab663da9b5dbb33fef983b6e4165e02f2a94",
+  "https://preview.redd.it/a-couple-favorite-halo-3-pieces-ive-made-v0-3p705kvhnjje1.jpg?width=1920&format=pjpg&auto=webp&s=7c64ab663da9b5dbb33fef983b6e4165e02f2a94",
   "https://cdnb.artstation.com/p/assets/images/images/082/151/789/large/2204-cortana-final.jpg?1732195463",
   "https://cdna.artstation.com/p/assets/images/images/082/151/512/large/2204-ark-nowatermark.jpg?1739451842",
   "https://cdnb.artstation.com/p/assets/images/images/082/151/367/large/2204-2hunters9.jpg?1739451597",
@@ -51,25 +51,81 @@ const backgroundImages = [
 ]
 
 let currentBackgroundIndex = 0
+const imageCache = new Map()
+let isTransitioning = false
 
-function changeBackground() {
-  document.body.style.opacity = "0.7"
-
-  setTimeout(() => {
-    let newIndex
-    do {
-      newIndex = Math.floor(Math.random() * backgroundImages.length)
-    } while (newIndex === currentBackgroundIndex && backgroundImages.length > 1)
-
-    currentBackgroundIndex = newIndex
-    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
-
-    document.body.style.opacity = "1"
-    setTimeout(extractColorsFromBackground, 300)
-  }, 300)
+function preloadImages() {
+  const preloadCount = 3
+  for (let i = 0; i < preloadCount; i++) {
+    const index = (currentBackgroundIndex + i + 1) % backgroundImages.length
+    if (!imageCache.has(index)) {
+      const img = new Image()
+      img.crossOrigin = "anonymous"
+      img.src = backgroundImages[index]
+      imageCache.set(index, img)
+    }
+  }
 }
 
-setInterval(changeBackground, 10000)
+function changeBackground() {
+  if (isTransitioning) return
+  isTransitioning = true
+
+  let newIndex
+  do {
+    newIndex = Math.floor(Math.random() * backgroundImages.length)
+  } while (newIndex === currentBackgroundIndex && backgroundImages.length > 1)
+
+  const blockCount = 8 // Bigger vertical sections
+  const transitionContainer = document.createElement("div")
+  transitionContainer.className = "block-transition-container"
+  document.body.appendChild(transitionContainer)
+
+  // Create blocks that show the NEW image while old image stays as background
+  for (let i = 0; i < blockCount; i++) {
+    const block = document.createElement("div")
+    block.className = "transition-block"
+    block.style.left = `${(i / blockCount) * 100}%`
+    block.style.width = `${100 / blockCount}%`
+    block.style.backgroundImage = `url('${backgroundImages[newIndex]}')`
+    block.style.backgroundSize = `${blockCount * 100}% 100%` // Scale image to fit all blocks
+    block.style.backgroundPosition = `${(i / (blockCount - 1)) * 100}% center`
+
+    transitionContainer.appendChild(block)
+
+    setTimeout(() => {
+      block.style.opacity = "1"
+
+      block.style.boxShadow = "0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8)"
+      block.style.borderColor = "rgba(255, 255, 255, 1)"
+
+      setTimeout(() => {
+        block.style.boxShadow = "none"
+        block.style.borderColor = "transparent"
+      }, 100) // Very quick flash
+    }, i * 150) // Faster stagger between sections
+  }
+
+  setTimeout(
+    () => {
+      currentBackgroundIndex = newIndex
+      document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
+      extractColorsFromBackground()
+    },
+    blockCount * 150 + 200,
+  )
+
+  setTimeout(
+    () => {
+      transitionContainer.remove()
+      isTransitioning = false
+      preloadImages()
+    },
+    blockCount * 150 + 500,
+  ) // Much shorter cleanup time
+}
+
+setInterval(changeBackground, 12000)
 
 function updateTime() {
   const now = new Date()
@@ -124,35 +180,40 @@ function removeCustomText() {
 document.addEventListener("DOMContentLoaded", removeCustomText)
 setInterval(removeCustomText, 1000)
 
+let mouseThrottleTimer = null
 document.addEventListener("mousemove", (e) => {
-  const bookmarks = document.querySelectorAll(".bookmark")
-  const mouseX = e.clientX / window.innerWidth
-  const mouseY = e.clientY / window.innerHeight
+  if (mouseThrottleTimer) return
 
-  bookmarks.forEach((bookmark, index) => {
-    const speed = ((index % 3) + 1) * 0.5
-    const x = (mouseX - 0.5) * speed
-    const y = (mouseY - 0.5) * speed
+  mouseThrottleTimer = setTimeout(() => {
+    const bookmarks = document.querySelectorAll(".bookmark")
+    const mouseX = e.clientX / window.innerWidth
+    const mouseY = e.clientY / window.innerHeight
 
-    bookmark.style.transform += ` translate(${x}px, ${y}px)`
-  })
+    bookmarks.forEach((bookmark, index) => {
+      const speed = ((index % 3) + 1) * 0.3
+      const x = (mouseX - 0.5) * speed
+      const y = (mouseY - 0.5) * speed
+
+      bookmark.style.transform += ` translate(${x}px, ${y}px)`
+    })
+
+    mouseThrottleTimer = null
+  }, 16)
 })
 
 function extractColorsFromBackground() {
+  const cachedImg = imageCache.get(currentBackgroundIndex)
+  if (cachedImg && cachedImg.complete) {
+    processImageColors(cachedImg)
+    return
+  }
+
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
   const img = new Image()
 
   img.crossOrigin = "anonymous"
-  img.onload = () => {
-    canvas.width = 100
-    canvas.height = 100
-    ctx.drawImage(img, 0, 0, 100, 100)
-
-    const imageData = ctx.getImageData(0, 0, 100, 100)
-    const colors = extractVibrantColors(imageData.data)
-    applyGradientBorders(colors)
-  }
+  img.onload = () => processImageColors(img)
 
   img.onerror = () => {
     const fallbackColors = ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
@@ -162,10 +223,24 @@ function extractColorsFromBackground() {
   img.src = backgroundImages[currentBackgroundIndex]
 }
 
+function processImageColors(img) {
+  const canvas = document.createElement("canvas")
+  const ctx = canvas.getContext("2d")
+
+  canvas.width = 50
+  canvas.height = 50
+  ctx.drawImage(img, 0, 0, 50, 50)
+
+  const imageData = ctx.getImageData(0, 0, 50, 50)
+  const colors = extractVibrantColors(imageData.data)
+  applyGradientBorders(colors)
+}
+
 function extractVibrantColors(imageData) {
   const colorMap = new Map()
+  const step = 8
 
-  for (let i = 0; i < imageData.length; i += 16) {
+  for (let i = 0; i < imageData.length; i += step * 4) {
     const r = imageData[i]
     const g = imageData[i + 1]
     const b = imageData[i + 2]
@@ -177,12 +252,12 @@ function extractVibrantColors(imageData) {
       const saturation = max === 0 ? 0 : (max - min) / max
       const brightness = (r + g + b) / 3
 
-      if (saturation > 0.4 && brightness > 40 && brightness < 200 && max < 220) {
+      if (saturation > 0.3 && brightness > 30 && brightness < 220 && max < 240) {
         const isNearWhite = r > 200 && g > 200 && b > 200
-        const isNearGray = Math.abs(r - g) < 30 && Math.abs(g - b) < 30 && Math.abs(r - b) < 30
+        const isNearGray = Math.abs(r - g) < 40 && Math.abs(g - b) < 40 && Math.abs(r - b) < 40
 
         if (!isNearWhite && !isNearGray) {
-          const colorKey = `${Math.floor(r / 25) * 25}-${Math.floor(g / 25) * 25}-${Math.floor(b / 25) * 25}`
+          const colorKey = `${Math.floor(r / 30) * 30}-${Math.floor(g / 30) * 30}-${Math.floor(b / 30) * 30}`
           colorMap.set(colorKey, (colorMap.get(colorKey) || 0) + 1)
         }
       }
@@ -191,45 +266,13 @@ function extractVibrantColors(imageData) {
 
   const sortedColors = Array.from(colorMap.entries())
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 6)
+    .slice(0, 4)
     .map(([colorKey]) => {
       const [r, g, b] = colorKey.split("-").map(Number)
       return `rgb(${r}, ${g}, ${b})`
     })
 
   return sortedColors.length >= 2 ? sortedColors : ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
-}
-
-function rgbToHsl(r, g, b) {
-  r /= 255
-  g /= 255
-  b /= 255
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b)
-  let h,
-    s,
-    l = (max + min) / 2
-
-  if (max === min) {
-    h = s = 0
-  } else {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0)
-        break
-      case g:
-        h = (b - r) / d + 2
-        break
-      case b:
-        h = (r - g) / d + 4
-        break
-    }
-    h /= 6
-  }
-
-  return [h * 360, s, l]
 }
 
 function applyGradientBorders(colors) {
@@ -293,5 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
   currentBackgroundIndex = Math.floor(Math.random() * backgroundImages.length)
   document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
 
-  setTimeout(extractColorsFromBackground, 1000)
+  preloadImages()
+  setTimeout(extractColorsFromBackground, 500)
 })
