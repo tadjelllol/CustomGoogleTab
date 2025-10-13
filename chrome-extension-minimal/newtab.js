@@ -12,7 +12,7 @@ const backgroundImages = [
   "https://images2.alphacoders.com/660/thumb-1920-660298.jpg",
   "https://images5.alphacoders.com/318/thumb-1920-318697.png",
   "https://images6.alphacoders.com/722/thumb-1920-722754.png",
-    "https://cdnb.artstation.com/p/assets/images/images/082/151/789/large/2204-cortana-final.jpg?1732195463",
+  "https://cdnb.artstation.com/p/assets/images/images/082/151/789/large/2204-cortana-final.jpg?1732195463",
   "https://cdna.artstation.com/p/assets/images/images/082/151/512/large/2204-ark-nowatermark.jpg?1739451842",
   "https://cdnb.artstation.com/p/assets/images/images/082/151/367/large/2204-2hunters9.jpg?1739451597",
   "https://cdnb.artstation.com/p/assets/images/images/082/152/817/large/2204-falloutnv.jpg?1739451908",
@@ -60,6 +60,12 @@ const backgroundImages = [
   "https://images2.alphacoders.com/191/thumb-1920-19102.png",
   "https://images8.alphacoders.com/129/thumb-1920-1293832.jpg",
   "https://w.wallhaven.cc/full/jx/wallhaven-jxm7oq.jpg",
+  "https://i.imgur.com/0aovwSc.png",
+  "https://i.imgur.com/SPS2ADa.png",
+  "https://i.imgur.com/4nTq7P8.png",
+  "https://i.imgur.com/QWd72AA.png",
+  "https://i.imgur.com/j0LJIIy.png",
+  "https://i.imgur.com/nWNvew0.png",
 ]
 
 let currentBackgroundIndex = 0
