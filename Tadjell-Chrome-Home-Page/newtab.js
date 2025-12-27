@@ -109,11 +109,8 @@ function changeBackground() {
   newImage.src = backgroundImages[newIndex]
 
   newImage.onload = () => {
-    // Set the background immediately, before transition starts
-    currentBackgroundIndex = newIndex
-    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
+    const oldImageUrl = backgroundImages[currentBackgroundIndex]
 
-    // Now start the transition blocks on top
     const blockCount = 8
     const transitionContainer = document.createElement("div")
     transitionContainer.className = "block-transition-container"
@@ -124,16 +121,17 @@ function changeBackground() {
       block.className = "transition-block"
       block.style.left = `${(i / blockCount) * 100}%`
       block.style.width = `${100 / blockCount}%`
-      block.style.backgroundImage = `url('${backgroundImages[newIndex]}')`
+      block.style.backgroundImage = `url('${oldImageUrl}')`
       block.style.backgroundSize = `${blockCount * 100}% 100%`
       block.style.backgroundPosition = `${(i / (blockCount - 1)) * 100}% center`
-      block.style.transform = "translateY(-100%)"
+      block.style.transform = "translateY(0)"
+      block.style.opacity = "1"
 
       transitionContainer.appendChild(block)
 
       setTimeout(() => {
-        block.style.transform = "translateY(0)"
-        block.style.opacity = "1"
+        block.style.transform = "translateY(100%)"
+        block.style.opacity = "0"
 
         block.style.boxShadow = "0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8)"
         block.style.borderColor = "rgba(255, 255, 255, 1)"
@@ -144,6 +142,11 @@ function changeBackground() {
         }, 100)
       }, i * 150)
     }
+
+    setTimeout(() => {
+      currentBackgroundIndex = newIndex
+      document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
+    }, 50)
 
     // Extract colors after background is set
     setTimeout(
