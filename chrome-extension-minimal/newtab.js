@@ -66,6 +66,17 @@ const backgroundImages = [
   "https://i.imgur.com/QWd72AA.png",
   "https://i.imgur.com/j0LJIIy.png",
   "https://i.imgur.com/nWNvew0.png",
+  "https://w.wallhaven.cc/full/x1/wallhaven-x1ymyv.jpg",
+  "https://preview.redd.it/new-berserk-wallpapers-upscaled-to-8k-then-compressed-to-5-v0-zxa12ermi47f1.jpg?width=1080&crop=smart&auto=webp&s=04aa138c6f1f259fca700cef922e8e37a1d682f9",
+  "https://w.wallhaven.cc/full/21/wallhaven-21y12g.png",
+  "https://images.alphacoders.com/131/thumb-1920-1315631.png",
+  "https://images7.alphacoders.com/666/thumb-1920-666343.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/13853.jpg",
+  "https://w.wallhaven.cc/full/yq/wallhaven-yqq857.png",
+  "https://w.wallhaven.cc/full/md/wallhaven-mdmwj1.jpg",
+  "https://w.wallhaven.cc/full/1p/wallhaven-1pzgm1.jpg",
+  ""
+
 ]
 
 let currentBackgroundIndex = 0
