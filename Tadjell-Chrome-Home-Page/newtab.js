@@ -104,54 +104,69 @@ function changeBackground() {
     newIndex = Math.floor(Math.random() * backgroundImages.length)
   } while (newIndex === currentBackgroundIndex && backgroundImages.length > 1)
 
-  const blockCount = 8 // Bigger vertical sections
-  const transitionContainer = document.createElement("div")
-  transitionContainer.className = "block-transition-container"
-  document.body.appendChild(transitionContainer)
+  const newImage = new Image()
+  newImage.crossOrigin = "anonymous"
+  newImage.src = backgroundImages[newIndex]
 
-  for (let i = 0; i < blockCount; i++) {
-    const block = document.createElement("div")
-    block.className = "transition-block"
-    block.style.left = `${(i / blockCount) * 100}%`
-    block.style.width = `${100 / blockCount}%`
-    block.style.backgroundImage = `url('${backgroundImages[newIndex]}')`
-    block.style.backgroundSize = `${blockCount * 100}% 100%` // Scale image to fit all blocks
-    block.style.backgroundPosition = `${(i / (blockCount - 1)) * 100}% center`
-    block.style.transform = "translateY(-100%)"
+  newImage.onload = () => {
+    // Set the background immediately, before transition starts
+    currentBackgroundIndex = newIndex
+    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
 
-    transitionContainer.appendChild(block)
+    // Now start the transition blocks on top
+    const blockCount = 8
+    const transitionContainer = document.createElement("div")
+    transitionContainer.className = "block-transition-container"
+    document.body.appendChild(transitionContainer)
 
-    setTimeout(() => {
-      block.style.transform = "translateY(0)"
-      block.style.opacity = "1"
+    for (let i = 0; i < blockCount; i++) {
+      const block = document.createElement("div")
+      block.className = "transition-block"
+      block.style.left = `${(i / blockCount) * 100}%`
+      block.style.width = `${100 / blockCount}%`
+      block.style.backgroundImage = `url('${backgroundImages[newIndex]}')`
+      block.style.backgroundSize = `${blockCount * 100}% 100%`
+      block.style.backgroundPosition = `${(i / (blockCount - 1)) * 100}% center`
+      block.style.transform = "translateY(-100%)"
 
-      block.style.boxShadow = "0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8)"
-      block.style.borderColor = "rgba(255, 255, 255, 1)"
+      transitionContainer.appendChild(block)
 
       setTimeout(() => {
-        block.style.boxShadow = "none"
-        block.style.borderColor = "transparent"
-      }, 100)
-    }, i * 150)
+        block.style.transform = "translateY(0)"
+        block.style.opacity = "1"
+
+        block.style.boxShadow = "0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8)"
+        block.style.borderColor = "rgba(255, 255, 255, 1)"
+
+        setTimeout(() => {
+          block.style.boxShadow = "none"
+          block.style.borderColor = "transparent"
+        }, 100)
+      }, i * 150)
+    }
+
+    // Extract colors after background is set
+    setTimeout(
+      () => {
+        extractColorsFromBackground()
+      },
+      blockCount * 150 + 400,
+    )
+
+    setTimeout(
+      () => {
+        transitionContainer.remove()
+        isTransitioning = false
+        preloadImages()
+      },
+      blockCount * 150 + 800,
+    )
   }
 
-  setTimeout(
-    () => {
-      currentBackgroundIndex = newIndex
-      document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
-      extractColorsFromBackground()
-    },
-    blockCount * 150 + 400,
-  )
-
-  setTimeout(
-    () => {
-      transitionContainer.remove()
-      isTransitioning = false
-      preloadImages()
-    },
-    blockCount * 150 + 800,
-  )
+  // Fallback in case image fails to load
+  newImage.onerror = () => {
+    isTransitioning = false
+  }
 }
 
 setInterval(changeBackground, 12000)
