@@ -66,6 +66,16 @@ const backgroundImages = [
   "https://i.imgur.com/QWd72AA.png",
   "https://i.imgur.com/j0LJIIy.png",
   "https://i.imgur.com/nWNvew0.png",
+  "https://w.wallhaven.cc/full/x1/wallhaven-x1ymyv.jpg",
+  "https://preview.redd.it/new-berserk-wallpapers-upscaled-to-8k-then-compressed-to-5-v0-zxa12ermi47f1.jpg?width=1080&crop=smart&auto=webp&s=04aa138c6f1f259fca700cef922e8e37a1d682f9",
+  "https://w.wallhaven.cc/full/21/wallhaven-21y12g.png",
+  "https://images.alphacoders.com/131/thumb-1920-1315631.png",
+  "https://images7.alphacoders.com/666/thumb-1920-666343.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/13853.jpg",
+  "https://w.wallhaven.cc/full/yq/wallhaven-yqq857.png",
+  "https://w.wallhaven.cc/full/md/wallhaven-mdmwj1.jpg",
+  "https://w.wallhaven.cc/full/1p/wallhaven-1pzgm1.jpg",
+  "",
 ]
 
 let currentBackgroundIndex = 0
@@ -94,37 +104,54 @@ function changeBackground() {
     newIndex = Math.floor(Math.random() * backgroundImages.length)
   } while (newIndex === currentBackgroundIndex && backgroundImages.length > 1)
 
-  const pseudoStyle = document.createElement("style")
-  pseudoStyle.textContent = `
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('${backgroundImages[newIndex]}');
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      animation: fadeInBg 1s ease-out forwards;
-      pointer-events: none;
-      z-index: 2;
-    }
-    @keyframes fadeInBg {
-      to { opacity: 1; }
-    }
-  `
-  document.head.appendChild(pseudoStyle)
+  const blockCount = 8 // Bigger vertical sections
+  const transitionContainer = document.createElement("div")
+  transitionContainer.className = "block-transition-container"
+  document.body.appendChild(transitionContainer)
 
-  setTimeout(() => {
-    currentBackgroundIndex = newIndex
-    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
-    pseudoStyle.remove()
-    isTransitioning = false
-    preloadImages()
-    extractColorsFromBackground()
-  }, 1000)
+  for (let i = 0; i < blockCount; i++) {
+    const block = document.createElement("div")
+    block.className = "transition-block"
+    block.style.left = `${(i / blockCount) * 100}%`
+    block.style.width = `${100 / blockCount}%`
+    block.style.backgroundImage = `url('${backgroundImages[newIndex]}')`
+    block.style.backgroundSize = `${blockCount * 100}% 100%` // Scale image to fit all blocks
+    block.style.backgroundPosition = `${(i / (blockCount - 1)) * 100}% center`
+    block.style.transform = "translateY(-100%)"
+
+    transitionContainer.appendChild(block)
+
+    setTimeout(() => {
+      block.style.transform = "translateY(0)"
+      block.style.opacity = "1"
+
+      block.style.boxShadow = "0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8)"
+      block.style.borderColor = "rgba(255, 255, 255, 1)"
+
+      setTimeout(() => {
+        block.style.boxShadow = "none"
+        block.style.borderColor = "transparent"
+      }, 100)
+    }, i * 150)
+  }
+
+  setTimeout(
+    () => {
+      currentBackgroundIndex = newIndex
+      document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`
+      extractColorsFromBackground()
+    },
+    blockCount * 150 + 400,
+  )
+
+  setTimeout(
+    () => {
+      transitionContainer.remove()
+      isTransitioning = false
+      preloadImages()
+    },
+    blockCount * 150 + 800,
+  )
 }
 
 setInterval(changeBackground, 12000)
@@ -204,38 +231,34 @@ document.addEventListener("mousemove", (e) => {
 })
 
 function extractColorsFromBackground() {
+  const fallbackColors = ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
+  applyGradientBorders(fallbackColors)
+
   const cachedImg = imageCache.get(currentBackgroundIndex)
   if (cachedImg && cachedImg.complete) {
-    processImageColors(cachedImg)
-    return
+    try {
+      processImageColors(cachedImg)
+    } catch (e) {
+      // Silently fail, keep using fallback colors
+    }
   }
-
-  const canvas = document.createElement("canvas")
-  const ctx = canvas.getContext("2d")
-  const img = new Image()
-
-  img.crossOrigin = "anonymous"
-  img.onload = () => processImageColors(img)
-
-  img.onerror = () => {
-    const fallbackColors = ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"]
-    applyGradientBorders(fallbackColors)
-  }
-
-  img.src = backgroundImages[currentBackgroundIndex]
 }
 
 function processImageColors(img) {
-  const canvas = document.createElement("canvas")
-  const ctx = canvas.getContext("2d")
+  try {
+    const canvas = document.createElement("canvas")
+    const ctx = canvas.getContext("2d")
 
-  canvas.width = 50
-  canvas.height = 50
-  ctx.drawImage(img, 0, 0, 50, 50)
+    canvas.width = 50
+    canvas.height = 50
+    ctx.drawImage(img, 0, 0, 50, 50)
 
-  const imageData = ctx.getImageData(0, 0, 50, 50)
-  const colors = extractVibrantColors(imageData.data)
-  applyGradientBorders(colors)
+    const imageData = ctx.getImageData(0, 0, 50, 50)
+    const colors = extractVibrantColors(imageData.data)
+    applyGradientBorders(colors)
+  } catch (e) {
+    console.log("[v0] Could not extract colors from image, using defaults")
+  }
 }
 
 function extractVibrantColors(imageData) {
