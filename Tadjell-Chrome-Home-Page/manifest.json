@@ -1,9 +1,8 @@
 {
-    "manifest_version": 5,
+    "manifest_version": 3,
     "name": "Tadjell's Custom Tab",
-    "version": "3.1",
+    "version": "3.2",
     "description": "A custom new tab with random backgrounds and bookmarks.",
-    "permissions": ["tabs","declarativeNetRequest"],
     "background": {
         "service_worker": "background.js"
     },

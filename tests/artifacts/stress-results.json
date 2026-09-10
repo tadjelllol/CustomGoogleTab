@@ -1,0 +1,13 @@
+{
+  "rotations": 102,
+  "before": {
+    "documents": 2,
+    "nodes": 441,
+    "jsEventListeners": 60
+  },
+  "after": {
+    "documents": 2,
+    "nodes": 440,
+    "jsEventListeners": 60
+  }
+}

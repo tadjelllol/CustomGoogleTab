@@ -1,0 +1,21 @@
+{
+  "canvas.ubc.ca": "assets/icons/canvas.ubc.ca.png",
+  "chat.openai.com": null,
+  "docs.google.com": "assets/icons/docs.google.com.png",
+  "github.com": "assets/icons/github.com.png",
+  "mail.google.com": "assets/icons/mail.google.com.png",
+  "merlin.foyer.work": null,
+  "myworkday.ubc.ca": null,
+  "outlook.office.com": null,
+  "piazza.com": "assets/icons/piazza.com.png",
+  "sites.google.com": null,
+  "studentaidbc.ca": null,
+  "students.ubc.ca": "assets/icons/students.ubc.ca.png",
+  "ubc.brightspace.com": null,
+  "v0.dev": null,
+  "www.google.com": "assets/icons/www.google.com.png",
+  "www.instagram.com": "assets/icons/www.instagram.com.png",
+  "www.library.ubc.ca": "assets/icons/www.library.ubc.ca.png",
+  "www.reddit.com": "assets/icons/www.reddit.com.png",
+  "www.youtube.com": "assets/icons/www.youtube.com.png"
+}

@@ -1,3 +1,5 @@
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.tabs.create({ url: 'chrome-extension://' + chrome.runtime.id + '/newtab.html' });
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === 'install') {
+        chrome.tabs.create({ url: chrome.runtime.getURL('newtab.html') });
+    }
 });

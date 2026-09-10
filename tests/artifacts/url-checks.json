@@ -1,0 +1,101 @@
+[
+  {
+    "url": "https://ubc.brightspace.com/d2l/home",
+    "error": "HTTP Error 403: Not authenticated."
+  },
+  {
+    "url": "https://canvas.ubc.ca/",
+    "status": 200,
+    "final": "https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
+  },
+  {
+    "url": "https://myworkday.ubc.ca/",
+    "status": 200,
+    "final": "https://wd10.myworkday.com/ubc/d/home.htmld"
+  },
+  {
+    "url": "https://outlook.office.com/",
+    "error": "HTTP Error 417: Expectation Failed"
+  },
+  {
+    "url": "https://students.ubc.ca/",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://www.library.ubc.ca/",
+    "status": 200,
+    "final": "https://www.library.ubc.ca/"
+  },
+  {
+    "url": "https://piazza.com/",
+    "status": 200,
+    "final": "https://piazza.com/"
+  },
+  {
+    "url": "https://studentaidbc.ca/",
+    "status": 200,
+    "final": "https://studentaidbc.ca/"
+  },
+  {
+    "url": "https://canvas.ubc.ca/courses/194749/pages/phys-157-w1-2026-introductory-physics-for-engineers-i",
+    "status": 200,
+    "final": "https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
+  },
+  {
+    "url": "https://piazza.com/class/msl923cl9ig32b",
+    "status": 200,
+    "final": "https://piazza.com/"
+  },
+  {
+    "url": "https://sites.google.com/site/chempendix/Home",
+    "status": 200,
+    "final": "https://sites.google.com/site/chempendix/Home"
+  },
+  {
+    "url": "https://www.google.com",
+    "status": 200,
+    "final": "https://www.google.com"
+  },
+  {
+    "url": "https://www.youtube.com",
+    "status": 200,
+    "final": "https://www.youtube.com"
+  },
+  {
+    "url": "https://www.reddit.com",
+    "error": "HTTP Error 403: Blocked"
+  },
+  {
+    "url": "https://chat.openai.com",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://v0.dev",
+    "status": 200,
+    "final": "https://v0.app/"
+  },
+  {
+    "url": "https://merlin.foyer.work",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://github.com/",
+    "status": 200,
+    "final": "https://github.com/"
+  },
+  {
+    "url": "https://www.instagram.com/",
+    "status": 200,
+    "final": "https://www.instagram.com/"
+  },
+  {
+    "url": "https://mail.google.com/mail/u/0/#inbox",
+    "status": 200,
+    "final": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S-134055391:1788984025889633"
+  },
+  {
+    "url": "https://docs.google.com/document/u/0/",
+    "status": 200,
+    "final": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/u/0/&followup=https://docs.google.com/document/u/0/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S-134055391:1788984026070202"
+  }
+]

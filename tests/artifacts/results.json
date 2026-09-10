@@ -1,0 +1,91 @@
+{
+  "wallpapersObserved": 4,
+  "pageErrors": [],
+  "consoleErrors": [],
+  "icons": [
+    {
+      "name": "BSBrightspace",
+      "valid": true
+    },
+    {
+      "name": "CUBC Canvas",
+      "valid": true
+    },
+    {
+      "name": "WWorkday",
+      "valid": true
+    },
+    {
+      "name": "EMUBC Email",
+      "valid": true
+    },
+    {
+      "name": "UBCStudent Services",
+      "valid": true
+    },
+    {
+      "name": "LIBUBC Library",
+      "valid": true
+    },
+    {
+      "name": "PPiazza",
+      "valid": true
+    },
+    {
+      "name": "BCStudentAid BC",
+      "valid": true
+    },
+    {
+      "name": "157PHYS 157",
+      "valid": true
+    },
+    {
+      "name": "PPHYS 157 Piazza",
+      "valid": true
+    },
+    {
+      "name": "CHCHEMpendix",
+      "valid": true
+    },
+    {
+      "name": "GGoogle",
+      "valid": true
+    },
+    {
+      "name": "YTYouTube",
+      "valid": true
+    },
+    {
+      "name": "RReddit",
+      "valid": true
+    },
+    {
+      "name": "AIChatGPT",
+      "valid": true
+    },
+    {
+      "name": "v0v0",
+      "valid": true
+    },
+    {
+      "name": "MMerlin AI",
+      "valid": true
+    },
+    {
+      "name": "GHGitHub",
+      "valid": true
+    },
+    {
+      "name": "IGInstagram",
+      "valid": true
+    },
+    {
+      "name": "GMGmail",
+      "valid": true
+    },
+    {
+      "name": "DGoogle Docs",
+      "valid": true
+    }
+  ]
+}
