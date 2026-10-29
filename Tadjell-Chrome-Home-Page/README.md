@@ -12,17 +12,15 @@ A build-free, vanilla HTML/CSS/JavaScript Manifest V3 extension.
 Installation opens one welcome/new-tab page. Updates do not open extra tabs.
 There are no requested permissions or host permissions.
 
-## Edit your links and wallpapers
+## Manage your bookmarks
 
-- `bookmarks.js`: UBC (8 links), Courses (6), General (10). UBC opens first.
-  Edit one object per bookmark. `icon: null` uses initials; otherwise use a local
-  icon path or a favicon URL. The enclosing group supplies group membership.
-- `wallpapers.js`: all 76 original nonblank wallpaper URLs, unchanged.
-- `assets/default-wallpaper.jpg`: a bundled copy of the first original wallpaper
-  (`https://w.wallhaven.cc/full/48/wallhaven-4859q2.jpg`) for immediate/offline display.
-- `assets/icons/`: bundled favicons fetched from their sites; no runtime icon service.
-- `newtab.js`: timing constants, rendering, wallpaper manager, theme, clock,
-  search and parallax. `styles.css` owns all bookmark transforms.
+Recent opens by default. It shows up to twelve locally ranked bookmarks using decaying recency and bounded frequency. First use shows suggestions. UBC includes the former Courses shortcuts; General holds other links; All shows everything. Filter bookmarks searches labels and URLs across categories, separately from Google search.
+
+Choose **Manage bookmarks** for add, edit, move, delete and category controls. Choose a bundled icon or initials. Category deletion requires moving its bookmarks to another category; Recent and All are protected views. Changes persist in local browser storage without extra extension permissions, a server or remote usage tracking. Clearing this extension's site data clears these local edits.
+
+The first load migrates the defaults in bookmarks.js. Later changes to that file do not overwrite saved edits. Invalid saved data is preserved and reported; a failed save does not replace the in-memory bookmark list. Limits: 500 bookmarks, 30 categories and one bounded usage summary per bookmark.
+
+Wallpapers remain defined in wallpapers.js; the 76 original nonblank URLs and bundled offline wallpaper are unchanged. The full wallpaper manager is deferred. Icon sources and hashes are recorded in assets/icons/SOURCES.json. Brightspace uses official Brightspace Pulse artwork. Every icon retains an initials fallback.
 
 ## Behavior
 
@@ -45,16 +43,9 @@ The group selector supports arrow keys, Home and End. Small screens scroll norma
 URLs were requested on 2026-09-09. Canvas, Workday, Gmail and Docs reach their
 login/service pages; authenticated access cannot be verified without signing in.
 The dedicated PHYS 157 Canvas/Piazza links were removed on 2026-09-10.
-Courses now contains PrairieTest, PrairieLearn, Achieve, Pearson MyLab, UBC WebMO
-and CHEMpendix. The five new URLs are preserved exactly as supplied; authenticated
-course access has not been verified. They use local initials fallbacks.
-Brightspace, UBC Student Services, Reddit, ChatGPT and Merlin blocked automated
-requests (403); Outlook returned 417. Their supplied URLs are preserved.
-v0 redirects to v0.app. Other public destinations responded successfully.
+UBC retains PrairieTest, PrairieLearn, Achieve, Pearson MyLab and UBC WebMO. Merlin AI and CHEMpendix were removed as requested. Authenticated course access has not been re-verified. v0 redirects to v0.app. Other public destinations responded successfully.
 
-Intentional initials fallbacks: Brightspace, Workday, UBC Email, StudentAid BC,
-CHEMpendix, ChatGPT, v0 and Merlin. Other shortcuts use downloaded site favicons;
-every card retains an initials fallback if its icon fails.
+UBC Email uses an initials fallback. Other requested icon corrections use bundled official assets; every card retains initials if its image fails.
 
 ## Verification
 

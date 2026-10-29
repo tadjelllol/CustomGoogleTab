@@ -21,11 +21,11 @@ with sync_playwright() as pw:
     console=[]
     page.on('console',lambda msg: console.append(msg.text) if msg.type=='error' else None)
     page.goto(f'chrome-extension://{extension_id}/newtab.html')
-    page.wait_for_function("document.querySelectorAll('.bookmark').length === 24")
+    page.wait_for_function("document.querySelector('[role=tab][aria-selected=true]').textContent === 'Recent'")
     assert page.locator('.wallpaper').count()==2
-    assert page.locator('.bookmark:visible').count()==8
+    assert page.locator('.bookmark:visible').count()==12
     for _ in range(4):
-        tab=context.new_page(); tab.goto('chrome://newtab/'); tab.wait_for_selector('#clock'); assert tab.locator('.bookmark').count()==24; tab.close()
+        tab=context.new_page(); tab.goto('chrome://newtab/'); tab.wait_for_selector('#clock'); assert tab.locator('.bookmark:visible').count()==12; tab.close()
     page.bring_to_front()
     print('Four new tabs opened and closed successfully',flush=True)
     page.wait_for_timeout(2000)
@@ -33,11 +33,12 @@ with sync_playwright() as pw:
     assert all(x['valid'] for x in icon_state),icon_state
     for w,h in [(1920,1080),(2560,1440),(3440,1440),(1366,768),(1024,600),(390,640)]:
         page.set_viewport_size({'width':w,'height':h})
-        for group in ['UBC','Courses','General']:
+        for group, expected in [('Recent',12),('UBC',13),('General',11),('All',24)]:
             page.get_by_role('tab',name=group,exact=True).click()
             dims=page.evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})')
             assert dims['sw']<=w,dims
-            if w>=1024: assert dims['sh']<=h,(group,dims)
+            assert page.locator('.bookmark:visible').count()==expected,(group,expected)
+            # All intentionally scrolls vertically as bookmarks grow.
         page.get_by_role('tab',name='UBC',exact=True).click()
         if w in [1920,1366,390]: page.screenshot(path=str(OUT/f'{w}x{h}.png'))
     page.set_viewport_size({'width':1920,'height':1080})

@@ -7,68 +7,6 @@ const PARALLAX_STRENGTH = 3;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 // Bookmark rendering and icon fallback. All listeners are bound only once.
-function renderBookmarks() {
-  const selector = document.getElementById('group-selector');
-  const panels = document.getElementById('bookmark-panels');
-  const tabs = [];
-  const sections = [];
-  const select = (index) => {
-    tabs.forEach((tab, i) => {
-      tab.setAttribute('aria-selected', String(i === index));
-      tab.tabIndex = i === index ? 0 : -1;
-      sections[i].hidden = i !== index;
-    });
-  };
-  bookmarkGroups.forEach((group, index) => {
-    const tab = document.createElement('button');
-    tab.type = 'button';
-    tab.id = `tab-${index}`;
-    tab.textContent = group.name;
-    tab.setAttribute('role', 'tab');
-    tab.setAttribute('aria-controls', `panel-${index}`);
-    tab.addEventListener('click', () => select(index));
-    tab.addEventListener('keydown', (event) => {
-      let next = index;
-      if (event.key === 'ArrowRight') next = (index + 1) % bookmarkGroups.length;
-      else if (event.key === 'ArrowLeft') next = (index + bookmarkGroups.length - 1) % bookmarkGroups.length;
-      else if (event.key === 'Home') next = 0;
-      else if (event.key === 'End') next = bookmarkGroups.length - 1;
-      else return;
-      event.preventDefault();
-      select(next);
-      tabs[next].focus();
-    });
-    const section = document.createElement('div');
-    section.id = `panel-${index}`;
-    section.setAttribute('role', 'tabpanel');
-    section.setAttribute('aria-labelledby', tab.id);
-    const grid = document.createElement('div');
-    grid.className = 'bookmarks';
-    group.bookmarks.forEach((bookmark) => {
-      const link = document.createElement('a');
-      link.className = 'bookmark';
-      link.href = bookmark.url;
-      link.append(createIcon(bookmark));
-      const label = document.createElement('span');
-      label.textContent = bookmark.label;
-      link.append(label);
-      grid.append(link);
-    });
-    section.append(grid);
-    if (group.name === 'Courses') {
-      const note = document.createElement('p');
-      note.className = 'course-note';
-      note.textContent = 'APSC 100 · APSC 160 · CHEM 154 · MATH 100 — use your LMS in UBC.';
-      section.append(note);
-    }
-    tabs.push(tab);
-    sections.push(section);
-    selector.append(tab);
-    panels.append(section);
-  });
-  select(0);
-}
-
 function createIcon(bookmark) {
   const wrapper = document.createElement('span');
   wrapper.className = 'icon';
@@ -281,7 +219,7 @@ function setupParallax() {
   finePointer.addEventListener('change', reset);
 }
 
-renderBookmarks();
+renderBookmarksV2();
 startClock();
 setupSearch();
 setupParallax();

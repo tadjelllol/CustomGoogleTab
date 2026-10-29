@@ -1,0 +1,141 @@
+{
+  "scope": "Downloaded from official service pages/product hosts or official Apple App Store listing. Every saved file was checked against its image signature; no HTML response was saved as an icon. Files are artifacts only, not copied into production.",
+  "assets": [
+    {
+      "product": "Brightspace Pulse",
+      "file": "assets/icons/brightspace_pulse.jpg",
+      "official_page": "https://apps.apple.com/us/app/brightspace-pulse/id1001688546",
+      "asset_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6a/f9/4e/6af94e91-9540-f5cf-290c-00d1cc0f9dae/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
+      "content_type": "image/jpeg",
+      "validated_signature": "JPEG",
+      "bytes": 31926,
+      "sha256": "62593fb5550562b2769bf8d5b3b516b8192a967a07ddc335f5f678a523f7fdbc",
+      "note": "D2L Corporation app artwork from official Apple App Store listing; it is the Brightspace Pulse mobile app icon, not a desktop Brightspace favicon."
+    },
+    {
+      "product": "Workday",
+      "file": "assets/icons/workday.ico",
+      "official_page": "https://myworkday.ubc.ca/",
+      "asset_url": "https://wd10.myworkday.com/favicon.ico",
+      "content_type": "image/x-icon;charset=UTF-8",
+      "validated_signature": "ICO",
+      "bytes": 32038,
+      "sha256": "f9a76a908c08be1753a3d629a5d70b94961e37aaaad89ec30f9d05965b4d5a58",
+      "note": "UBC Workday launcher redirects to the UBC Workday service host; icon served by that host."
+    },
+    {
+      "product": "StudentAid BC",
+      "file": "assets/icons/studentaidbc.ico",
+      "official_page": "https://studentaidbc.ca/",
+      "asset_url": "https://studentaidbc.ca/themes/custom/sabc/favicon.ico",
+      "content_type": "image/vnd.microsoft.icon",
+      "validated_signature": "ICO",
+      "bytes": 22486,
+      "sha256": "f4a6580176a7f256faa3a69f3652ca495e0a85fefa330916b49791608b4522ba",
+      "note": "Official homepage-declared favicon."
+    },
+    {
+      "product": "PrairieTest",
+      "file": "assets/icons/prairietest.png",
+      "official_page": "https://us.prairietest.com/",
+      "asset_url": "https://us.prairietest.com/favicon.ico",
+      "content_type": "image/x-icon",
+      "validated_signature": "PNG",
+      "bytes": 88193,
+      "sha256": "eca1b6a3df76e719198ce37da9a7ffa019f2bc1e06e309078351abe8b978d744",
+      "note": "Official site favicon response contains valid PNG bytes despite the ICO Content-Type."
+    },
+    {
+      "product": "PrairieLearn",
+      "file": "assets/icons/prairielearn.ico",
+      "official_page": "https://us.prairielearn.com/",
+      "asset_url": "https://us.prairielearn.com/favicon.ico",
+      "content_type": "image/x-icon",
+      "validated_signature": "ICO",
+      "bytes": 1150,
+      "sha256": "585d71547dc4f3589a4d414ae173eccdadfe7845a69de69fe16cbd775278f1f5",
+      "note": "Official PrairieLearn login host favicon."
+    },
+    {
+      "product": "Achieve",
+      "file": "assets/icons/achieve.png",
+      "official_page": "https://achieve.macmillanlearning.com/",
+      "asset_url": "https://achieve.macmillanlearning.com/apple-touch-icon.png",
+      "content_type": "image/png",
+      "validated_signature": "PNG",
+      "bytes": 9414,
+      "sha256": "9e03e1e92d2961c579074a19fe48e3a050bf85784aec5c58322556f0d0517986",
+      "note": "Official site-declared Apple touch icon."
+    },
+    {
+      "product": "Pearson MyLab",
+      "file": "assets/icons/pearson_mylab.ico",
+      "official_page": "https://mylabmastering.pearson.com/",
+      "asset_url": "https://mylabmastering.pearson.com/favicon.ico",
+      "content_type": "image/x-icon",
+      "validated_signature": "ICO",
+      "bytes": 1150,
+      "sha256": "fa71cc5cd465c8b8b3b2e92bd16cbd1d0f62c6b3a2a9a1a14423e83385ab3bf3",
+      "note": "Official MyLab and Mastering host favicon."
+    },
+    {
+      "product": "UBC WebMO",
+      "file": "assets/icons/ubc_webmo.ico",
+      "official_page": "https://abacus.chem.ubc.ca/webmo/cgi-bin/login.cgi",
+      "asset_url": "https://abacus.chem.ubc.ca/webmo/webmo/images/webmo.ico",
+      "content_type": "image/vnd.microsoft.icon",
+      "validated_signature": "ICO",
+      "bytes": 12862,
+      "sha256": "f77ab4d0fca3c777d9d6f7ca46895acad842ede76fcd42798f3bcc6048da5703",
+      "note": "Official UBC Chemistry WebMO page-declared favicon."
+    },
+    {
+      "product": "Google Docs",
+      "file": "assets/icons/google_docs.png",
+      "official_page": "https://docs.google.com/document/u/0/",
+      "asset_url": "https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png",
+      "content_type": "image/png",
+      "validated_signature": "PNG",
+      "bytes": 257,
+      "sha256": "152a07eb146da5c8184334e1c6a20661ad5373f52faa1f5a8a59c1515e163d1d",
+      "note": "Official Google static Docs product icon. Docs login redirected to Google Accounts; generic Google favicon was rejected."
+    },
+    {
+      "product": "Google Calendar",
+      "file": "assets/icons/google_calendar.png",
+      "official_page": "https://calendar.google.com/",
+      "asset_url": "https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png",
+      "content_type": "image/png",
+      "validated_signature": "PNG",
+      "bytes": 534,
+      "sha256": "9386c0cf9194c74f60d4d13cabc4f7a320d2b6e63238c8b9fcdabefe18e8b231",
+      "note": "Official Google static Calendar product icon. Calendar login redirected to Google Accounts; generic Google favicon was rejected."
+    },
+    {
+      "product": "ChatGPT",
+      "file": "assets/icons/chatgpt.png",
+      "official_page": "https://chatgpt.com/",
+      "asset_url": "https://chatgpt.com/unauth-mweb/apple-touch-icon.png",
+      "content_type": "image/png",
+      "validated_signature": "PNG",
+      "bytes": 5152,
+      "sha256": "c450a1e3c375bf5c6d1db10327b59a58f5bd6e4990ffdbf6f292e3d161c668de",
+      "note": "Official ChatGPT site touch icon."
+    },
+    {
+      "product": "v0",
+      "file": "assets/icons/v0.png",
+      "official_page": "https://v0.app/",
+      "asset_url": "https://v0.app/assets/icon-light-32x32.png",
+      "content_type": "image/png",
+      "validated_signature": "PNG",
+      "bytes": 566,
+      "sha256": "83145e5bb033ace23cd8e7fbb63e7c39733aaf58f8a7280d7800995cced6f7c2",
+      "note": "Official v0 page-declared light 32px icon."
+    }
+  ],
+  "notes": [
+    "Brightspace uses official D2L Brightspace Pulse app artwork for the requested Brightspace/Pulse identity.",
+    "Existing docs.google.com.png is the Drive mark; only Google Drive uses it. Google Docs uses official google_docs.png."
+  ]
+}

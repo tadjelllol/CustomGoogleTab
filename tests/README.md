@@ -1,3 +1,9 @@
+# Custom Tab V2 checks
+
+Run `node tests/bookmark-store.test.cjs` from the Git root for migration, CRUD, ranking, safe deletion, malformed data, quota rollback and sequential cross-tab persistence checks. No dependencies required.
+
+The browser fixtures now use Recent (12), UBC (13), General (11) and All (24) for a fresh profile. All may scroll vertically. The verification below records the earlier version and is historical, not a V2 test claim.
+
 # Browser verification — 2026-09-09
 
 The extension was installed unpacked in an isolated, headless Google Chrome

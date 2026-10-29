@@ -35,7 +35,8 @@ with sync_playwright() as pw:
     offline.evaluate("backgroundImages.splice(0,backgroundImages.length,'https://fixture.test/dead.jpg')")
     offline.wait_for_timeout(1500)
     assert offline.locator('.is-current').evaluate("e=>getComputedStyle(e).backgroundImage.includes('default-wallpaper')")
-    assert offline.locator('.bookmark').count()==24
+    offline.get_by_role('tab',name='All',exact=True).click()
+    assert offline.locator('.bookmark:visible').count()==24
     print('All images failed: offline background and 24 bookmarks intact',flush=True)
     offline.unroute_all(behavior='ignoreErrors')
     context.close()
