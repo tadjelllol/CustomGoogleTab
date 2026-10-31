@@ -1,13 +1,16 @@
 {
     "manifest_version": 3,
     "name": "Tadjell's Custom Tab",
-    "version": "3.2",
+    "version": "2.1",
     "description": "A custom new tab with random backgrounds and bookmarks.",
+    "permissions": [
+        "storage"
+    ],
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2ZS5BY/0vBUvNr0I2CwZCVEi/36aoyeQq3uBlmWV1UnRSGmY5k+EODlXu/k4YXmVGuiRZ9mIZm3/ZNh2HoAKTjnVLPHAZ8f7HOZPbayrFEyRcNYhPXl7Mf6YjMUTc8cHBLg3Aw2NFChr+IGnqh7EvZRvMqZLa4a+8fknt3erku68QFfo2UnhOSYsNM5ek/QWOYKEPUMbbLGgGWEMMoWjANeklDv1EzEj20cUF678+fL1iaXnAM+CO+JJ3y71zsvgYnwGPzDcqNAy1jEf079RXkWzk7IUt6f4j6bhVS8EOJkocSpGPL5TQXl5YxCRV3Y9i7uPzTGGE2v4ejs2cAms0QIDAQAB",
     "background": {
         "service_worker": "background.js"
     },
     "chrome_url_overrides": {
         "newtab": "newtab.html"
     }
-    
 }

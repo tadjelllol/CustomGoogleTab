@@ -7,6 +7,7 @@ function renderBookmarksV2() {
   let activeTab = 'recent';
   let query = '';
   let managing = false;
+  let isReady = false;
 
   const controls = document.createElement('div');
   controls.className = 'bookmark-controls';
@@ -55,6 +56,20 @@ function renderBookmarksV2() {
     manageButton.setAttribute('aria-expanded', String(managing));
     render();
   });
+
+  const initialize = async () => {
+    await store.ready;
+    isReady = true;
+    refresh();
+    store.subscribe(() => {
+      refresh();
+      if (store.error) {
+        setStatus(`Bookmarks are read-only: ${store.error}`);
+      }
+    });
+  };
+
+  initialize();
 
   function makeButton(label, action) {
     const button = document.createElement('button');
@@ -142,21 +157,26 @@ function renderBookmarksV2() {
         label.textContent = bookmark.label;
         link.append(label);
         link.addEventListener('click', event => {
-          if (event.button === 0) recordUse(bookmark.id);
+          if (event.button === 0) {
+            if (managing) {
+              event.preventDefault();
+              editBookmark(bookmark, link);
+            } else {
+              recordUse(bookmark.id);
+            }
+          }
         });
         link.addEventListener('auxclick', event => {
-          if (event.button === 1) recordUse(bookmark.id);
+          if (event.button === 1) {
+            if (managing) {
+              event.preventDefault();
+              editBookmark(bookmark, link);
+            } else {
+              recordUse(bookmark.id);
+            }
+          }
         });
         item.append(link);
-        if (managing) {
-          const itemActions = document.createElement('div');
-          itemActions.className = 'bookmark-item-actions';
-          itemActions.append(
-            makeButton(`Edit ${bookmark.label}`, button => editBookmark(bookmark, button.currentTarget)),
-            makeButton(`Delete ${bookmark.label}`, button => confirmDelete(bookmark, button.currentTarget)),
-          );
-          item.append(itemActions);
-        }
         grid.append(item);
       });
       panel.append(grid);
@@ -269,10 +289,25 @@ function renderBookmarksV2() {
     const urlInput = addField(form, 'URL', 'url', 'url', bookmark?.url || '', true, 2000);
     const categoryOptions = categories().map(category => ({ value: category.id, label: category.name }));
     const categorySelect = addSelect(form, 'Category', 'category', categoryOptions, bookmark?.category || categoryOptions[0]?.value);
-    const iconValues = [...new Set(state.bookmarks.map(item => item.icon).filter(icon => typeof icon === 'string' && icon.startsWith('assets/')))];
-    const iconOptions = [{ value: '', label: 'Initials' }, ...iconValues.map(icon => ({ value: icon, label: icon.split('/').pop() }))];
-    const iconSelect = addSelect(form, 'Icon', 'icon', iconOptions, bookmark?.icon || '');
+    const iconOptions = [
+      { value: 'automatic', label: 'Automatic' },
+      { value: 'custom', label: 'Custom image URL' },
+      { value: 'initials', label: 'Initials' }
+    ];
+    const iconSelect = addSelect(form, 'Icon', 'icon', iconOptions, bookmark?.icon ? (bookmark.icon.startsWith('assets/') ? 'automatic' : (bookmark.icon.startsWith('http') ? 'custom' : 'initials')) : 'initials');
     iconSelect.required = false;
+    const customIconInput = addField(form, 'Custom Icon URL', 'customIcon', 'url', bookmark?.icon?.startsWith('http') ? bookmark.icon : '', false, 2000);
+    customIconInput.style.display = iconSelect.value === 'custom' ? 'block' : 'none';
+    iconSelect.addEventListener('change', () => {
+      customIconInput.style.display = iconSelect.value === 'custom' ? 'block' : 'none';
+    });
+    if (bookmark) {
+      const deleteButton = makeButton('Delete bookmark', () => {
+        dialog.close();
+        confirmDelete(bookmark, returnFocus);
+      });
+      form.append(deleteButton);
+    }
     addSubmit(form, bookmark ? 'Save changes' : 'Add bookmark');
     form.append(makeButton('Cancel', () => dialog.close()));
     form.addEventListener('submit', () => {
@@ -280,7 +315,13 @@ function renderBookmarksV2() {
       const url = urlInput.value.trim();
       if (!label || !url || !categorySelect.value) { message.textContent = 'Enter a label, URL, and category.'; return; }
       try {
-        const data = { label, url, category: categorySelect.value, icon: iconSelect.value || null, short: label.slice(0, 2).toUpperCase() };
+        const data = {
+      label,
+      url,
+      category: categorySelect.value,
+      icon: iconSelect.value === 'automatic' ? (bookmarkGroups.flatMap(g => g.bookmarks).find(b => b.url === url)?.icon || null) : (iconSelect.value === 'custom' ? customIconInput.value.trim() : null),
+      short: label.slice(0, 2).toUpperCase()
+    };
         if (bookmark) store.editBookmark(bookmark.id, data);
         else store.addBookmark(data);
         state = store.state;
@@ -369,13 +410,15 @@ function renderBookmarksV2() {
   }
 
   window.addEventListener('storage', () => {
-    try {
-      state = store.read();
-      setStatus(store.error ? `Bookmarks are read-only: ${store.error}` : '');
-      manageButton.disabled = Boolean(store.error);
-      render();
-    } catch (error) {
-      setStatus(`Bookmarks could not be refreshed: ${error.message}`);
+    if (isReady) {
+      try {
+        state = store.read();
+        setStatus(store.error ? `Bookmarks are read-only: ${store.error}` : '');
+        manageButton.disabled = Boolean(store.error);
+        render();
+      } catch (error) {
+        setStatus(`Bookmarks could not be refreshed: ${error.message}`);
+      }
     }
   });
 
